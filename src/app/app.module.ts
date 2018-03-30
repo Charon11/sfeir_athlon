@@ -10,8 +10,6 @@ import {environment} from '../environments/environment';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCheckboxModule} from '@angular/material';
-import {UiModule} from './ui/ui.module';
-import {ContentModule} from './content/content.module';
 
 
 @NgModule({
@@ -19,8 +17,6 @@ import {ContentModule} from './content/content.module';
     AppComponent
   ],
   imports: [
-    UiModule,
-    ContentModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
