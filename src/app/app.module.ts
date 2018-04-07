@@ -44,11 +44,13 @@ import {
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
+import { CompetitorComponent } from './competitor/competitor.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CompetitorComponent
   ],
   imports: [
     BrowserModule,

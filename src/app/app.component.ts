@@ -8,21 +8,17 @@ import {Observable} from 'rxjs/Observable';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  items: Observable<any[]>;
-  collabs: any[] = new Array<any>();
+  teamLeaders: any[] = new Array<any>();
 
   constructor(db: AngularFirestore) {
-    const that = this;
-    this.items = db.collection('items').valueChanges();
-    db.firestore.collection('collab').get().then(querySnapshot => {
-      querySnapshot.forEach(function(doc) {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, ' => ', doc.data());
-        that.collabs.push(doc.data());
+    db.collection('classement').valueChanges().subscribe(v => {
+      this.teamLeaders = v.sort((a: any, b: any) => {
+        if (a.classement < b.classement) { return -1; }
+        else if (a.classement > b.classement) { return 1; }
+        else if (a.classement === b.classement) {
+          if (a.lastname < b.lastname) { return -1; } else { return 1; }
+        } else { return 0; }
       });
     });
-    db.collection('items').add({
-      'test': (Math.random().toString(16).substr(2, 8))
-    }).then(value => console.log('bla' + value));
   }
 }

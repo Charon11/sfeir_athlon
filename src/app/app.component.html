@@ -4,27 +4,11 @@
   </header>
 </div>
 
-<mat-card class="card-hover">
-  <div class="competition-podium well">
+<div style="padding-top: 60px">
+  <mat-card class="card-hover" *ngFor="let c of teamLeaders">
+    <app-competitor [teamLeader]="c"></app-competitor>
+  </mat-card>
+</div>
 
-    <div class="podium-block bronze">
-      <div class="name">Guillaume</div>
-      <div class="podium"><span>3<sup>ème</sup></span></div>
-    </div>
-    <div class="podium-block gold">
-      <div class="name">Eric</div>
-      <div class="podium"><span>1<sup>er</sup></span></div>
-    </div>
-    <div class="podium-block silver">
-      <div class="name">Julien</div>
-      <div class="podium"><span>2<sup>ème</sup></span></div>
-    </div>
 
-  </div>
-  <ul>
-    <li class="text" *ngFor="let c of collabs">
-      {{c.nom}} {{c.prenom}}
-    </li>
-  </ul>
 
-</mat-card>
