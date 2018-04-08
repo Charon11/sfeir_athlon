@@ -25,7 +25,7 @@ export class AppComponent {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(RulesDialogComponent, {
-      width: '70%',
+      width: '90%',
       height: '90%'
     });
 
