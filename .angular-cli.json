@@ -9,6 +9,7 @@
       "outDir": "dist",
       "assets": [
         "assets",
+        "rules/rules.md",
         "favicon.ico",
         "manifest.json"
       ],

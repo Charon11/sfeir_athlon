@@ -6,9 +6,10 @@ import {AppRoutingModule} from './app-routing.module';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {AppComponent} from './app.component';
 import {AngularFireModule} from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireStorageModule } from 'angularfire2/storage';
-import { AngularFireAuthModule } from 'angularfire2/auth';
+import {AngularFirestoreModule} from 'angularfire2/firestore';
+import {AngularFireStorageModule} from 'angularfire2/storage';
+import {AngularFireAuthModule} from 'angularfire2/auth';
+import {MarkdownModule} from 'angular2-markdown';
 
 import {environment} from '../environments/environment';
 
@@ -44,13 +45,15 @@ import {
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
-import { CompetitorComponent } from './competitor/competitor.component';
+import {CompetitorComponent} from './competitor/competitor.component';
+import {RulesDialogComponent} from './rules-dialog/rules-dialog.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    CompetitorComponent
+    CompetitorComponent,
+    RulesDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +92,11 @@ import { CompetitorComponent } from './competitor/competitor.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    MarkdownModule.forRoot(),
+  ],
+  entryComponents: [
+    RulesDialogComponent
   ],
   exports: [MatButtonModule, MatCheckboxModule],
   providers: [],

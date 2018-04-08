@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {AngularFirestore} from 'angularfire2/firestore';
-import {Observable} from 'rxjs/Observable';
+import {MatDialog} from '@angular/material';
+import {RulesDialogComponent} from './rules-dialog/rules-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ import {Observable} from 'rxjs/Observable';
 export class AppComponent {
   teamLeaders: any[] = new Array<any>();
 
-  constructor(db: AngularFirestore) {
+  constructor(db: AngularFirestore, public dialog: MatDialog) {
     db.collection('classement').valueChanges().subscribe(v => {
       this.teamLeaders = v.sort((a: any, b: any) => {
         if (a.classement < b.classement) { return -1; }
@@ -21,4 +22,15 @@ export class AppComponent {
       });
     });
   }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(RulesDialogComponent, {
+      width: '70%',
+      height: '90%'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  };
 }
