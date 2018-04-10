@@ -1,19 +1,19 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
-import {AppRoutingModule} from './app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 
-import {ServiceWorkerModule} from '@angular/service-worker';
-import {AppComponent} from './app.component';
-import {AngularFireModule} from 'angularfire2';
-import {AngularFirestoreModule} from 'angularfire2/firestore';
-import {AngularFireStorageModule} from 'angularfire2/storage';
-import {AngularFireAuthModule} from 'angularfire2/auth';
-import {MarkdownModule} from 'angular2-markdown';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { AppComponent } from './components/app/app.component';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { MarkdownModule } from 'angular2-markdown';
 
-import {environment} from '../environments/environment';
+import { environment } from '../environments/environment';
 
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -45,15 +45,22 @@ import {
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
-import {CompetitorComponent} from './competitor/competitor.component';
-import {RulesDialogComponent} from './rules-dialog/rules-dialog.component';
+import { CompetitorComponent } from './components/competitor/competitor.component';
+import { RulesDialogComponent } from './components/rules-dialog/rules-dialog.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
+import { LeaderboardPipe } from './pipes/leaderboard.pipe';
+import { TeamLeaderService } from './services/team-leader.service';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     CompetitorComponent,
-    RulesDialogComponent
+    RulesDialogComponent,
+    ToolbarComponent,
+    LeaderboardComponent,
+    LeaderboardPipe
   ],
   imports: [
     BrowserModule,
@@ -99,7 +106,7 @@ import {RulesDialogComponent} from './rules-dialog/rules-dialog.component';
     RulesDialogComponent
   ],
   exports: [MatButtonModule, MatCheckboxModule],
-  providers: [],
+  providers: [TeamLeaderService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
