@@ -23,13 +23,16 @@
       "styles": [
         "styles.sass"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/prismjs/prism.js",
+        "../node_modules/marked/lib/marked.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
       },
-      "serviceWorker": false
+      "serviceWorker": true
     }
   ],
   "e2e": {

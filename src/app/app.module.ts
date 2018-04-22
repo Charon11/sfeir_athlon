@@ -9,7 +9,8 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { MarkdownModule } from 'angular2-markdown';
+import { ShowdownModule } from 'ngx-showdown';
+import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { environment } from '../environments/environment';
@@ -101,7 +102,8 @@ import { TeamLeaderService } from './services/team-leader.service';
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
-    MarkdownModule.forRoot(),
+    ShowdownModule,
+    HttpClientModule,
     FlexLayoutModule
   ],
   entryComponents: [
