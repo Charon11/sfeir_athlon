@@ -53,6 +53,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
 import { LeaderboardPipe } from './pipes/leaderboard.pipe';
 import { TeamLeaderService } from './services/team-leader.service';
+import {LocalForageModule} from 'ngx-localforage';
 
 
 @NgModule({
@@ -103,6 +104,7 @@ import { TeamLeaderService } from './services/team-leader.service';
     AngularFireAuthModule,
     AngularFireStorageModule,
     ShowdownModule,
+    LocalForageModule.forRoot(),
     HttpClientModule,
     FlexLayoutModule
   ],
