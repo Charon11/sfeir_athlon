@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {TeamLeader} from '../models/team-leader';
 import {Observable} from 'rxjs/Observable';
+import { merge } from 'rxjs/observable/merge';
 import {AngularFirestore, AngularFirestoreCollection} from 'angularfire2/firestore';
 import {LocalForageService} from 'ngx-localforage';
 
@@ -16,6 +17,10 @@ export class TeamLeaderService {
   }
 
   get leaderboard(): Observable<Array<TeamLeader>> {
+    return merge(this.cachedLeaderboard(), this.firebaseLeaderboard());
+  }
+
+  firebaseLeaderboard(): Observable<Array<TeamLeader>> {
     return this._teamLeaders.valueChanges()
       .map(teamLeaders => {
         this.localforage.setItem('tl', teamLeaders);
@@ -37,10 +42,10 @@ export class TeamLeaderService {
       });
   }
 
-  get cachedLeaderboard(): Observable<Array<TeamLeader>> {
+  cachedLeaderboard(): Observable<Array<TeamLeader>> {
     return this.localforage.getItem('tl').map(teamLeaders => {
       console.log('cached');
-      return teamLeaders.sort((a: TeamLeader, b: TeamLeader) => {
+      return teamLeaders ? teamLeaders.sort((a: TeamLeader, b: TeamLeader) => {
         if (a.classement < b.classement) {
           return -1;
         } else if (a.classement > b.classement) {
@@ -54,7 +59,7 @@ export class TeamLeaderService {
         } else {
           return 0;
         }
-      });
+      }) : [];
     });
   }
 

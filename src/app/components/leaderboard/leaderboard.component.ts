@@ -10,14 +10,10 @@ import {Observable} from 'rxjs/Observable';
 })
 export class LeaderboardComponent implements OnInit {
 
-  private readonly _teamLeaders: Observable<Array<TeamLeader>>;
+  private _teamLeaders: Observable<Array<TeamLeader>>;
   private _tls: Array<TeamLeader>;
 
   constructor(private _teamLeaderService: TeamLeaderService) {
-    this._teamLeaderService.cachedLeaderboard.subscribe(x => this._tls = x);
-    this._teamLeaderService.leaderboard.subscribe(x => this._tls = x);
-    // this._teamLeaders = this._teamLeaderService.cachedLeaderboard;
-    // this._teamLeaders = this._teamLeaderService.leaderboard;
   }
 
   get teamLeaders(): Observable<Array<TeamLeader>> {
@@ -29,6 +25,7 @@ export class LeaderboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._teamLeaderService.leaderboard.subscribe(x => this._tls = x);
   }
 
 }
