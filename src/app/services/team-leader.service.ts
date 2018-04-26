@@ -15,7 +15,7 @@ export class TeamLeaderService {
   }
 
   get leaderboard(): Observable<Array<TeamLeader>> {
-    return Observable.fromPromise(this._db.collection('classement').valueChanges()   .get().then(querySnapshot => {
+    return Observable.fromPromise(this._db.collection('classement').get().then(querySnapshot => {
       const source = querySnapshot.metadata.fromCache ? 'local cache' : 'server';
       console.log('Data came from ' + source);
       return querySnapshot.docs.map(d =>  d.data()).sort((a: TeamLeader, b: TeamLeader) => {
