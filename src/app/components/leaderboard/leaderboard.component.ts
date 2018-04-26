@@ -25,7 +25,8 @@ export class LeaderboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._teamLeaderService.leaderboard.subscribe(x => this._tls = x);
+    // this._teamLeaderService.leaderboard.subscribe(x => this._tls = x);
+    this._teamLeaders = this._teamLeaderService.leaderboard;
   }
 
 }
