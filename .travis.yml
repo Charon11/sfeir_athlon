@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- 9.11.1
+branches:
+  only:
+  - master
+before_script:
+- npm install -g firebase-tools
+- npm install -g @angular/cli
+script:
+- ng build --prod --aot
+after_success:
+- firebase deploy --token 1/XQIPsCTl3fm2mvMhb84f3O5h5hbJ_jhgkGupv2Srzlo
+env:
+  global:
+    secure: bQYvfTfUaLtaclhuhQicifD2sbSEQd93lrqJXQtwwXMfJ71rql8m4ckdVg68zEs6v6VWCo0Qq6FcsBCvtWHnVYdhGtDWGS5yUb0zocjKOoqTQSimZR5wYcdjF9N3u46n9sNF6n++NKx1NpM10eZ/9c0OSrJJUWe5X9Wil+Qjq0IIV/yVLUymYzD+4vVF2VXCpwpD9ixKQOV/1+G1R73EAQe5ud+V4rxZywMWLjK7usWcuJ12OkDbbqfh+TvyFpB5E2nPVmaoHPICyBgoh7gAgkGG6KSCDRGpTBiwTxHWZAVVcD94XM/WOqoleNBiWWTTrNvekgvwh8lncIR4LZw27PaOz25hDHO6usmB2YcYhVPGUD7xLmzqMhSUTaCnZGSkbRfRI2wrIjOoCraf4LKHLmiT+maTrG/oVRtfIK3ryjYvO3oROlV9eWO9LVGLbtcVafoCZqknJ1td5ds4PJSPPmyKLHNfGspDZw++BKs/Fb0qWAVMXcpR0dvV57lxnSPKsW+E+8qrCToQvDmvZYA8f4bQhWOo6cukdtKYp+ydFaOTtv3SO2cbAvUVD15ltLKc0Ig6hyVa/CoXa9ZHZTt68DbZ+blim1DNcXSeJ4jOLQ+lMznDh5B75gjla9b27/A02PfiKtu0qHAsZuqxZWbuWwVlwwVx4gJepnhVTpn0aXs=

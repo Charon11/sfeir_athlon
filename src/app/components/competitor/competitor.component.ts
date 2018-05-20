@@ -9,21 +9,22 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class CompetitorComponent implements OnInit {
 
+  @Input('teamleader') private _teamLeader: TeamLeader;
+  private _photoUrl;
+
   constructor(private _sanitizer: DomSanitizer) {
   }
 
-  @Input('teamleader') private _teamLeader: TeamLeader;
+  get photoUrl() {
+    return this._photoUrl;
+  }
 
   get teamLeader(): TeamLeader {
     return this._teamLeader;
   }
 
   ngOnInit() {
-  }
-
-  getSafeBackground(photo) {
-    console.log(this._sanitizer.bypassSecurityTrustStyle(`url(${photo})`));
-    return this._sanitizer.bypassSecurityTrustStyle(`url(${photo})`);
+    this._photoUrl = this._sanitizer.bypassSecurityTrustStyle(`url(${this._teamLeader.photo})`);
   }
 
 }

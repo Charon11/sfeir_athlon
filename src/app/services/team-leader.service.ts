@@ -9,6 +9,9 @@ export class TeamLeaderService {
   private _teamLeaders: AngularFirestoreCollection<TeamLeader>;
 
   constructor(private _fbDataBase: AngularFirestore) {
+    const settings = {/* your settings... */ timestampsInSnapshots: true};
+    this._fbDataBase.firestore.settings(settings);
+    this._fbDataBase.firestore.enablePersistence().then();
     this._teamLeaders = this._fbDataBase.collection('classement');
   }
 

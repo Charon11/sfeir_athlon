@@ -1,9 +1,9 @@
 <mat-card>
   <mat-card-header>
-    <div mat-card-avatar [style.background-image]="getSafeBackground(teamLeader?.photo)"
+    <div mat-card-avatar [style.height]="'85px'" [style.width]="'85px'" [style.background-image]="photoUrl"
          [style.background-size]="'cover'"></div>
-    <mat-card-title>{{teamLeader?.classement}} - {{teamLeader?.points}} points</mat-card-title>
-    <mat-card-subtitle>{{teamLeader?.firstname}} {{teamLeader?.lastname | uppercase}}</mat-card-subtitle>
+    <mat-card-title style="font-size: 20px">{{teamLeader?.firstname}} {{teamLeader?.lastname}}</mat-card-title>
+    <mat-card-subtitle style="font-size: 15px">Classement : {{teamLeader?.classement}} - {{teamLeader?.points}} points</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
 
