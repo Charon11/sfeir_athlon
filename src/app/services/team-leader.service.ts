@@ -9,7 +9,6 @@ export class TeamLeaderService {
   private _teamLeaders: AngularFirestoreCollection<TeamLeader>;
 
   constructor(private _fbDataBase: AngularFirestore) {
-    this._fbDataBase.firestore.enablePersistence().then();
     this._teamLeaders = this._fbDataBase.collection('classement');
   }
 

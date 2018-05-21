@@ -1,5 +1,7 @@
-<mat-toolbar id="toolbar" color="primary">
-  <span>Sfeir'Athlon</span>
-  <span class="example-spacer"></span>
-  <button mat-button (click)="openDialog()">Réglement</button>
+<mat-toolbar role="header" id="toolbar" color="primary" layout="row" layout-sm="column" layout-align="end center"
+             layout-wrap>
+  <a id="title" mat-button routerLink="">Sfeir'Athlon</a>
+  <span class="fill-remaining-space"></span>
+  <a routerLink="events" routerLinkActive="active" mat-button>Events</a>
+  <a routerLink="rules" routerLinkActive="active" mat-button>Réglement</a>
 </mat-toolbar>

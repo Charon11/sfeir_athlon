@@ -1,9 +1,10 @@
 export interface TeamLeader {
   firstname: string;
   lastname: string;
-  classement: number;
+  classement?: number;
   photo: string;
-  points: number;
-  trigramme: string;
+  points?: number;
+  trigramme?: string;
   safeImage?: any;
+  places?: number;
 }

@@ -11,6 +11,7 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { MarkdownModule } from 'angular2-markdown';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { environment } from '../environments/environment';
 
@@ -52,6 +53,11 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
 import { LeaderboardPipe } from './pipes/leaderboard.pipe';
 import { TeamLeaderService } from './services/team-leader.service';
+import { EventsService } from './services/events.service';
+import { EventsComponent } from './components/events/events.component';
+import { EventComponent } from './components/event/event.component';
+import { EventsRankPipe } from './pipes/events-rank.pipe';
+import { EventsPipe } from './pipes/events.pipe';
 
 
 @NgModule({
@@ -61,7 +67,11 @@ import { TeamLeaderService } from './services/team-leader.service';
     RulesDialogComponent,
     ToolbarComponent,
     LeaderboardComponent,
-    LeaderboardPipe
+    LeaderboardPipe,
+    EventsComponent,
+    EventComponent,
+    EventsRankPipe,
+    EventsPipe
   ],
   imports: [
     BrowserModule,
@@ -102,13 +112,14 @@ import { TeamLeaderService } from './services/team-leader.service';
     AngularFireAuthModule,
     AngularFireStorageModule,
     MarkdownModule.forRoot(),
+    FontAwesomeModule,
     FlexLayoutModule
   ],
   entryComponents: [
     RulesDialogComponent
   ],
   exports: [MatButtonModule, MatCheckboxModule],
-  providers: [TeamLeaderService],
+  providers: [TeamLeaderService, EventsService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
