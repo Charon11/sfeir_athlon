@@ -11,7 +11,7 @@
 
       <ng-template matExpansionPanelContent>
         <mat-list role="list">
-          <mat-list-item role="listitem" *ngFor="let c of (event.classement | eventsRank)">{{c.rank}}. {{c.teamleader.firstname}} {{c.teamleader.lastname}} - {{c.points}} points</mat-list-item>
+          <mat-list-item role="listitem" *ngFor="let c of (event.classement | eventsRank)"><app-event-rank [event-rank]="c" ></app-event-rank></mat-list-item>
         </mat-list>
       </ng-template>
     </mat-expansion-panel>

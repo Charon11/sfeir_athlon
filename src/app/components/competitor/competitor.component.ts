@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TeamLeader } from '../../models/team-leader';
 import { DomSanitizer } from '@angular/platform-browser';
+import {RankedTeamleader} from '../../models/ranked-teamleader';
 
 @Component({
   selector: 'app-competitor',
@@ -9,7 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class CompetitorComponent implements OnInit {
 
-  @Input('teamleader') private _teamLeader: TeamLeader;
+  @Input('teamleader') private _teamLeader: RankedTeamleader;
   private _photoUrl;
 
   constructor(private _sanitizer: DomSanitizer) {
@@ -19,12 +20,17 @@ export class CompetitorComponent implements OnInit {
     return this._photoUrl;
   }
 
-  get teamLeader(): TeamLeader {
+  get teamLeader(): RankedTeamleader {
     return this._teamLeader;
   }
 
   ngOnInit() {
-    this._photoUrl = this._sanitizer.bypassSecurityTrustStyle(`url(${this._teamLeader.photo})`);
+    this._teamLeader.teamleader.onSnapshot(doc => {
+      this._teamLeader.lastname = doc.data().lastname;
+      this._teamLeader.firstname = doc.data().firstname;
+      this._teamLeader.photo = doc.data().photo;
+      this._photoUrl = this._sanitizer.bypassSecurityTrustStyle(`url(${this._teamLeader.photo})`);
+    });
   }
 
 }

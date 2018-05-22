@@ -58,6 +58,7 @@ import { EventsComponent } from './components/events/events.component';
 import { EventComponent } from './components/event/event.component';
 import { EventsRankPipe } from './pipes/events-rank.pipe';
 import { EventsPipe } from './pipes/events.pipe';
+import { EventRankComponent } from './components/event-rank/event-rank.component';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { EventsPipe } from './pipes/events.pipe';
     EventsComponent,
     EventComponent,
     EventsRankPipe,
-    EventsPipe
+    EventsPipe,
+    EventRankComponent
   ],
   imports: [
     BrowserModule,

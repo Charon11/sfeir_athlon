@@ -14,7 +14,6 @@ export class EventsComponent implements OnInit {
 
   constructor(private eventService: EventsService) {
     this._events = this.eventService.events;
-    this.events.forEach(c => console.log(c));
   }
 
   get events(): Observable<Array<Event>> {

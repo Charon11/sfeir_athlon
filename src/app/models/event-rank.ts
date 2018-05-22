@@ -1,8 +1,8 @@
-import {TeamLeader} from './team-leader';
+import {RankedTeamleader} from './ranked-teamleader';
 
 export interface EventRank {
   rank: number;
   points: number;
   tl: any;
-  teamleader: TeamLeader;
+  teamleader: RankedTeamleader;
 }
