@@ -19,7 +19,7 @@ export class EventsService {
   get events(): Observable<Array<Event>> {
     return this._events.valueChanges()
       .map(events =>
-        events.reverse());
+        events.sort((a: Event, b: Event) => b.date.getTime() - a.date.getTime()));
   }
 
   get groupedTeamleaders(): Observable<Array<RankedTeamleader>> {
