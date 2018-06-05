@@ -10,7 +10,7 @@
       "assets": [
         "assets",
         "rules/rules.md",
-        "images/icons/*",
+        "icons/*",
         "favicon.ico",
         "manifest.json"
       ],
