@@ -1,9 +1,11 @@
 
 {
+  "configVersion": 2,
   "index": "/index.html",
   "assetGroups": [{
     "name": "app",
     "installMode": "prefetch",
+    "updateMode": "prefetch",
     "resources": {
       "files": [
         "/index.html"
