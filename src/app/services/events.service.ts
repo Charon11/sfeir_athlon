@@ -37,13 +37,20 @@ export class EventsService {
             places: er.reduce((p, c) => p + c.rank, 0),
           };
           gtl.push(rtl);
+          console.log(rtl);
         }
 
         return gtl.sort((a: RankedTeamleader, b: RankedTeamleader) => {
-          return (b.points - b.places) - (a.points - a.places);
+          if (a.points === b.points) {
+            return (a.places) - (b.places);
+          } else {
+            return (b.points ) - (a.points);
+          }
+          // return (b.points ) - (a.points);
         })
           .map((t, i) => {
             t.classement = i + 1;
+            console.log(t)
             return t;
           });
       });
