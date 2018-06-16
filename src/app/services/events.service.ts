@@ -5,7 +5,6 @@ import {AngularFirestore, AngularFirestoreCollection} from 'angularfire2/firesto
 import {RankedTeamleader} from '../models/ranked-teamleader';
 import {EventRank} from '../models/event-rank';
 import * as _ from 'lodash';
-import {TeamLeader} from '../models/team-leader';
 
 @Injectable()
 export class EventsService {

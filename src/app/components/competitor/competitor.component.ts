@@ -29,6 +29,7 @@ export class CompetitorComponent implements OnInit {
       this._teamLeader.lastname = doc.data().lastname;
       this._teamLeader.firstname = doc.data().firstname;
       this._teamLeader.photo = doc.data().photo;
+      this._teamLeader.displayName = doc.data().displayName;
       this._photoUrl = this._sanitizer.bypassSecurityTrustStyle(`url(${this._teamLeader.photo})`);
     });
   }

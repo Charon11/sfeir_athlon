@@ -7,4 +7,5 @@ export interface RankedTeamleader {
   places?: number;
   photo?: string;
   safeImage?: any;
+  displayName?: string;
 }

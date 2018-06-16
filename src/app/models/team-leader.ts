@@ -5,6 +5,7 @@ export interface TeamLeader {
   photo: string;
   points?: number;
   trigramme?: string;
+  displayName?: string;
   safeImage?: any;
   places?: number;
 }
