@@ -58,6 +58,7 @@ import {EventComponent} from './components/event/event.component';
 import {EventsRankPipe} from './pipes/events-rank.pipe';
 import {EventsPipe} from './pipes/events.pipe';
 import {EventRankComponent} from './components/event-rank/event-rank.component';
+import { CompetitorEventsDialogComponent } from './components/competitor-events-dialog/competitor-events-dialog.component';
 
 
 @NgModule({
@@ -72,7 +73,8 @@ import {EventRankComponent} from './components/event-rank/event-rank.component';
     EventComponent,
     EventsRankPipe,
     EventsPipe,
-    EventRankComponent
+    EventRankComponent,
+    CompetitorEventsDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -117,7 +119,7 @@ import {EventRankComponent} from './components/event-rank/event-rank.component';
     FlexLayoutModule
   ],
   entryComponents: [
-    RulesDialogComponent
+    CompetitorEventsDialogComponent
   ],
   exports: [MatButtonModule, MatCheckboxModule],
   providers: [EventsService],

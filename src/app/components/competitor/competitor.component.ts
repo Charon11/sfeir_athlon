@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TeamLeader } from '../../models/team-leader';
 import { DomSanitizer } from '@angular/platform-browser';
 import {RankedTeamleader} from '../../models/ranked-teamleader';
+import {EventsService} from '../../services/events.service';
 
 @Component({
   selector: 'app-competitor',

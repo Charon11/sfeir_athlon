@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>{{displayName}}</h2>
+<div mat-dialog-content fxLayout="column" fxLayoutGap="10px">
+    <mat-card *ngFor="let e of (events | async)">
+      <mat-card-header>
+        <mat-card-title style="font-size: 20px">{{e.name}}</mat-card-title>
+        <mat-card-subtitle style="font-size: 15px">Classement : {{e.classement.rank}} -  {{e.classement.points}} points</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+</div>

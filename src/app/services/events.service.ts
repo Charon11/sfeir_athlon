@@ -5,6 +5,7 @@ import {AngularFirestore, AngularFirestoreCollection} from 'angularfire2/firesto
 import {RankedTeamleader} from '../models/ranked-teamleader';
 import {EventRank} from '../models/event-rank';
 import * as _ from 'lodash';
+import {TeamleaderEvent} from '../models/teamleader-event';
 
 @Injectable()
 export class EventsService {
@@ -21,6 +22,22 @@ export class EventsService {
         events.sort((a: Event, b: Event) => b.date.getTime() - a.date.getTime()));
   }
 
+   teamLeaderEvents(tlId: string): Observable<Array<TeamleaderEvent>> {
+    return this.events.map((events: Array<Event>) => {
+      return events.map(event => {
+        event.classement.forEach(c => console.log(c.tl.id === tlId))
+        const tl = <TeamleaderEvent>{
+          name: event.name,
+          date: event.date,
+          url: event.url,
+          classement: event.classement.find(c => c.tl.id === tlId)
+        };
+        console.log(tl);
+        return tl;
+      });
+    });
+}
+
   get groupedTeamleaders(): Observable<Array<RankedTeamleader>> {
     return this._events.valueChanges()
       .map(events => {
@@ -36,7 +53,6 @@ export class EventsService {
             places: er.reduce((p, c) => p + c.rank, 0),
           };
           gtl.push(rtl);
-          console.log(rtl);
         }
 
         return gtl.sort((a: RankedTeamleader, b: RankedTeamleader) => {
@@ -49,7 +65,6 @@ export class EventsService {
         })
           .map((t, i) => {
             t.classement = i + 1;
-            console.log(t)
             return t;
           });
       });

@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {TeamLeader} from '../../models/team-leader';
 import {Observable} from 'rxjs/Observable';
 import {EventsService} from '../../services/events.service';
-import {EventRank} from '../../models/event-rank';
-import * as _ from 'lodash';
 import {RankedTeamleader} from '../../models/ranked-teamleader';
+import {MatDialog} from '@angular/material';
+import {CompetitorEventsDialogComponent} from '../competitor-events-dialog/competitor-events-dialog.component';
 
 @Component({
   selector: 'app-leaderboard',
@@ -15,7 +14,8 @@ export class LeaderboardComponent implements OnInit {
 
   private readonly _rankedTeamLeaders: Observable<Array<RankedTeamleader>>;
 
-  constructor(private _eventsService: EventsService) {
+  constructor(private _eventsService: EventsService,
+              private dialog: MatDialog) {
     this._rankedTeamLeaders = this._eventsService.groupedTeamleaders;
   }
 
@@ -25,6 +25,14 @@ export class LeaderboardComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  onCardClick(item: RankedTeamleader) {
+    const dialogRef = this.dialog.open(CompetitorEventsDialogComponent, {
+      width: '90%'
+    });
+    dialogRef.componentInstance.teamLeaderId = item.teamleader.id;
+    dialogRef.componentInstance.displayName = item.displayName;
   }
 
 }
