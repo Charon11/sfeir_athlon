@@ -25,15 +25,12 @@ export class EventsService {
    teamLeaderEvents(tlId: string): Observable<Array<TeamleaderEvent>> {
     return this.events.map((events: Array<Event>) => {
       return events.map(event => {
-        event.classement.forEach(c => console.log(c.tl.id === tlId))
-        const tl = <TeamleaderEvent>{
+        return <TeamleaderEvent>{
           name: event.name,
           date: event.date,
           url: event.url,
           classement: event.classement.find(c => c.tl.id === tlId)
         };
-        console.log(tl);
-        return tl;
       });
     });
 }

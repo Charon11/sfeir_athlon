@@ -33,6 +33,7 @@ export class LeaderboardComponent implements OnInit {
     });
     dialogRef.componentInstance.teamLeaderId = item.teamleader.id;
     dialogRef.componentInstance.displayName = item.displayName;
+    dialogRef.componentInstance.photo = item.photo;
   }
 
 }

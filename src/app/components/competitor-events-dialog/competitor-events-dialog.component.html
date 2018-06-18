@@ -1,9 +1,23 @@
-<h2 mat-dialog-title>{{displayName}}</h2>
+<div class='table'>
+  <div class='cell'
+       [style.height]="'42px'"
+       [style.width]="'42px'"
+       [style.background-image]="photoUrl"
+       [style.background-position]="'center'"
+       [style.background-size]="'cover'"
+       [style.border-radius]="'50%'"
+  >
+  </div>
+  <div class='cell' style="padding-left: 10px">
+    {{displayName}}
+  </div>
+</div>
 <div mat-dialog-content fxLayout="column" fxLayoutGap="10px">
-    <mat-card *ngFor="let e of (events | async)">
-      <mat-card-header>
-        <mat-card-title style="font-size: 20px">{{e.name}}</mat-card-title>
-        <mat-card-subtitle style="font-size: 15px">Classement : {{e.classement.rank}} -  {{e.classement.points}} points</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
+  <mat-card *ngFor="let e of (events | async)">
+    <mat-card-header>
+      <mat-card-title style="font-size: 20px">{{e.name}}</mat-card-title>
+      <mat-card-subtitle style="font-size: 15px">Classement : {{e.classement.rank}} - {{e.classement.points}} points
+      </mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
 </div>

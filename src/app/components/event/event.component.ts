@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Event} from '../../models/event';
 import {RankedTeamleader} from '../../models/ranked-teamleader';
-import {EventRank} from '../../models/event-rank';
 
 @Component({
   selector: 'app-event',
