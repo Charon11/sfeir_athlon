@@ -59,6 +59,7 @@ import {EventsRankPipe} from './pipes/events-rank.pipe';
 import {EventsPipe} from './pipes/events.pipe';
 import {EventRankComponent} from './components/event-rank/event-rank.component';
 import { CompetitorEventsDialogComponent } from './components/competitor-events-dialog/competitor-events-dialog.component';
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 
 
 @NgModule({
@@ -74,7 +75,8 @@ import { CompetitorEventsDialogComponent } from './components/competitor-events-
     EventsRankPipe,
     EventsPipe,
     EventRankComponent,
-    CompetitorEventsDialogComponent
+    CompetitorEventsDialogComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,

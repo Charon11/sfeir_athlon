@@ -5,4 +5,5 @@ export interface Event {
   classement: Array<EventRank>;
   date: Date;
   url: string;
+  register?: string;
 }

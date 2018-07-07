@@ -15,5 +15,6 @@
         </mat-list>
       </ng-template>
     </mat-expansion-panel>
+    <div *ngIf="event?.register" [innerHTML]="event?.register | safeHtml" style="margin-top: 10px" ></div>
   </mat-card-content>
 </mat-card>
