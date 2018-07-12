@@ -60,6 +60,7 @@ import {EventsPipe} from './pipes/events.pipe';
 import {EventRankComponent} from './components/event-rank/event-rank.component';
 import { CompetitorEventsDialogComponent } from './components/competitor-events-dialog/competitor-events-dialog.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { FilterTeamleaderEventPipe } from './pipes/filter-teamleader-event.pipe';
 
 
 @NgModule({
@@ -76,7 +77,8 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     EventsPipe,
     EventRankComponent,
     CompetitorEventsDialogComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    FilterTeamleaderEventPipe
   ],
   imports: [
     BrowserModule,
