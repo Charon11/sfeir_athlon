@@ -12,6 +12,7 @@ import {AngularFireAuthModule} from 'angularfire2/auth';
 import {MarkdownModule} from 'angular2-markdown';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import { ChartsModule } from 'ng2-charts';
 
 import {environment} from '../environments/environment';
 
@@ -120,7 +121,8 @@ import { FilterTeamleaderEventPipe } from './pipes/filter-teamleader-event.pipe'
     AngularFireStorageModule,
     MarkdownModule.forRoot(),
     FontAwesomeModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    ChartsModule
   ],
   entryComponents: [
     CompetitorEventsDialogComponent
