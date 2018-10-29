@@ -42,8 +42,16 @@ export class EventsService {
     return _.groupBy(classement, 'tl.id');
   }
 
-  getPointsAndPlace(gr, key): RankedTeamleader {
-    const er = gr[key];
+  getNEventsClassementAllTL(events, n): object  {
+    // Recupère le classement de tous les évènements qui ont eu lieu
+    const sliceEvents = events.slice(0, n);
+    const classement = sliceEvents.map(e => e.classement).reduce((result: Array<EventRank>, c) => result.concat(c), []);
+    // Regroupe les classements des évènements par team leader
+    return _.groupBy(classement, 'tl.id');
+  }
+
+  getPointsAndPlace(eventsClassment, classment): RankedTeamleader {
+    const er = eventsClassment[classment];
     const rtl: RankedTeamleader = <RankedTeamleader>{
       teamleader : er[0].tl,
       points: er.reduce((p, c) => p + c.points, 0),
@@ -52,29 +60,14 @@ export class EventsService {
     return rtl;
   }
 
-  getPointsAndPlaceAllTL(gr): Array<RankedTeamleader>  {
+  getPointsAndPlaceAllTL(eventsClassment): Array<RankedTeamleader>  {
     // Calcule la somme des points ainsi que la somme des places de chaque TL
     const gtl: Array<RankedTeamleader> = [];
 
-    for (const key in gr) {
-      const rtl: RankedTeamleader = this.getPointsAndPlace(gr, key);
+    for (const classment in eventsClassment) {
+      const rtl: RankedTeamleader = this.getPointsAndPlace(eventsClassment, classment);
       // Ajout de chaque Ranked TL avec ses points ainsi que ses places
       gtl.push(rtl);
-    }
-    return gtl;
-  }
-
-  getPointsAndPlaceAllTLAndByNumberOfEvents(gr, number): Array<RankedTeamleader>  {
-    // Calcule la somme des points ainsi que la somme des places d'un seul TL
-    const gtl: Array<RankedTeamleader> = [];
-    let compt = 1;
-    for (const key in gr) {
-      for (const key2 in gr[key]) {
-        const rtl: RankedTeamleader = this.getPointsAndPlace(gr, key);
-        gtl.push(rtl);
-        if (compt === number) { break; } else { compt++; }
-      }
-      compt = 1;
     }
     return gtl;
   }
@@ -96,38 +89,29 @@ export class EventsService {
   }
 
   get groupedTeamleaders(): Observable<Array<RankedTeamleader>> {
-    const thus = this;
     return this._events.valueChanges()
       .map(events => {
-        const gr = thus.getEventsClassementAllTL(events);
-        const gtl = thus.getPointsAndPlaceAllTL(gr);
+        const eventsClassment = this.getEventsClassementAllTL(events);
+        const pointAndPlace = this.getPointsAndPlaceAllTL(eventsClassment);
 
         // Trie La liste des RTL en fonction d'abord du nombre de points puis du nombre de place
-        return thus.sortRankedTeamLeader(gtl);
+        return this.sortRankedTeamLeader(pointAndPlace);
       });
   }
 
-  getaddClassementByTL(tl): Observable<Array<Number>> {
-    const thus = this;
-    const classmentArray: Array<Number> = [];
+  getGroupedTeamLeadersAfterEveryEvents(): Observable<Array<Array<RankedTeamleader>>> {
+    const classmtEveryEvents: Array<Array<RankedTeamleader>> = [];
     return this._events.valueChanges()
       .map(events => {
-        const gr = thus.getEventsClassementAllTL(events);
-
-        let compt = 1;
-        for (const key in gr) {
-          const gtl = thus.getPointsAndPlaceAllTLAndByNumberOfEvents(gr, compt);
-          const classedTL: Array< RankedTeamleader>  = thus.sortRankedTeamLeader(gtl);
-
-          for (const key2 in classedTL) {
-            //TODO : Comment accéder au displayName ?????????????
-            if (classedTL[key2].displayName === tl) {
-              classmentArray.push(classedTL[key2].classement);
-            }
-          }
-          compt++;
+        for (const event in events) {
+          const  eventsClassment = this.getNEventsClassementAllTL(events, event);
+          const pointAndPlace = this.getPointsAndPlaceAllTL(eventsClassment);
+          const rtl: Array<RankedTeamleader> = this.sortRankedTeamLeader(pointAndPlace);
+          classmtEveryEvents.push(rtl);
         }
-        return classmentArray;
+        return classmtEveryEvents;
       });
   }
+
+
 }

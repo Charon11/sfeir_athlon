@@ -15,9 +15,30 @@ export class CompetitorComponent implements OnInit {
   @Input('teamleader') private _teamLeader: RankedTeamleader;
   private _photoUrl;
 
-  private addClassement: Array<Number> ;
+  private genClassment: Array<Number> = [] ;
+
+  private _everyEventsRankedTeamLeaders: Array<Array<RankedTeamleader>>;
 
   constructor(private _sanitizer: DomSanitizer, private _eventsService: EventsService) {
+    this._eventsService.getGroupedTeamLeadersAfterEveryEvents().subscribe((result) => {
+      this._everyEventsRankedTeamLeaders = result;
+    });
+  }
+
+  getGeneralClassmentAfterEveryEventByTL(): Array<Number> {
+    const genClassment: Array<Number> = [];
+    for (const key in this._everyEventsRankedTeamLeaders) {
+      const eventRTL = this._everyEventsRankedTeamLeaders[key];
+      for (let key2 = 0; key2 < eventRTL.length; key2++) {
+          const teamleader =  eventRTL[key2].teamleader.onSnapshot(doc => {
+            if (doc.data().lastname === this._teamLeader.lastname) {
+              genClassment.push(eventRTL[key2].classement);
+            }
+          });
+      }
+    }
+    console.log(genClassment);
+    return genClassment;
   }
 
   get photoUrl() {
@@ -33,10 +54,10 @@ export class CompetitorComponent implements OnInit {
   };
 
   chartData = [
-    { data: [330, 600, 260, 700], label: 'Account A' },
+    { data: this.genClassment, label: 'Account A' },
   ];
 
-  chartLabels = ['January', 'February', 'Mars', 'April'];
+  chartLabels = ['January', 'February', 'Mars', 'April','Mai','June','Jully'];
 
   onChartClick(event) {
     console.log(event);
@@ -48,14 +69,11 @@ export class CompetitorComponent implements OnInit {
       this._teamLeader.firstname = doc.data().firstname;
       this._teamLeader.photo = doc.data().photo;
       this._teamLeader.displayName = doc.data().displayName;
-
-      this._eventsService.getaddClassementByTL(this._teamLeader.displayName).subscribe(addClassment => {
-        this.addClassement = addClassment;
-      })
-      console.log(this._teamLeader.displayName);
-      console.log('classmenet');
-      console.log(this.addClassement);
       this._photoUrl = this._sanitizer.bypassSecurityTrustStyle(`url(${this._teamLeader.photo})`);
+      this.genClassment = this.getGeneralClassmentAfterEveryEventByTL();
+      this.chartData.push({ data: this.genClassment, label: 'Account A' });
+      console.log(this._teamLeader.lastname);
+      console.log(this.genClassment);
     });
   }
 
