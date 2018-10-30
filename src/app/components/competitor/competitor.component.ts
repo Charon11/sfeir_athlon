@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import { TeamLeader } from '../../models/team-leader';
 import { DomSanitizer } from '@angular/platform-browser';
 import {RankedTeamleader} from '../../models/ranked-teamleader';
 import {EventsService} from '../../services/events.service';
 import {Observable} from 'rxjs/Observable';
+import {BaseChartDirective} from 'ng2-charts';
 
 @Component({
   selector: 'app-competitor',
@@ -12,34 +13,19 @@ import {Observable} from 'rxjs/Observable';
 })
 export class CompetitorComponent implements OnInit {
 
+  @ViewChild("baseChart") chart: BaseChartDirective;
+
   @Input('teamleader') private _teamLeader: RankedTeamleader;
   private _photoUrl;
 
-  private genClassment: Array<Number> = [] ;
+  private genClassment: Map<string, number> = new Map<string, number>() ;
 
-  private _everyEventsRankedTeamLeaders: Array<Array<RankedTeamleader>>;
+  private labels_line = Array<any>();
 
   constructor(private _sanitizer: DomSanitizer, private _eventsService: EventsService) {
-    this._eventsService.getGroupedTeamLeadersAfterEveryEvents().subscribe((result) => {
-      this._everyEventsRankedTeamLeaders = result;
-    });
+
   }
 
-  getGeneralClassmentAfterEveryEventByTL(): Array<Number> {
-    const genClassment: Array<Number> = [];
-    for (const key in this._everyEventsRankedTeamLeaders) {
-      const eventRTL = this._everyEventsRankedTeamLeaders[key];
-      for (let key2 = 0; key2 < eventRTL.length; key2++) {
-          const teamleader =  eventRTL[key2].teamleader.onSnapshot(doc => {
-            if (doc.data().lastname === this._teamLeader.lastname) {
-              genClassment.push(eventRTL[key2].classement);
-            }
-          });
-      }
-    }
-    console.log(genClassment);
-    return genClassment;
-  }
 
   get photoUrl() {
     return this._photoUrl;
@@ -54,10 +40,10 @@ export class CompetitorComponent implements OnInit {
   };
 
   chartData = [
-    { data: this.genClassment, label: 'Account A' },
+    { data: [], label: 'Account A' },
   ];
 
-  chartLabels = ['January', 'February', 'Mars', 'April','Mai','June','Jully'];
+  chartLabels = ['January', 'February', 'Mars', 'April', 'Mai', 'June', 'Jully'];
 
   onChartClick(event) {
     console.log(event);
@@ -70,11 +56,28 @@ export class CompetitorComponent implements OnInit {
       this._teamLeader.photo = doc.data().photo;
       this._teamLeader.displayName = doc.data().displayName;
       this._photoUrl = this._sanitizer.bypassSecurityTrustStyle(`url(${this._teamLeader.photo})`);
-      this.genClassment = this.getGeneralClassmentAfterEveryEventByTL();
-      this.chartData.push({ data: this.genClassment, label: 'Account A' });
-      console.log(this._teamLeader.lastname);
-      console.log(this.genClassment);
+
+      this._eventsService.getClassmentEveryEventGeneralByTL(this._teamLeader).subscribe((result) => {
+        this.genClassment = result;
+        console.log(this._teamLeader.lastname);
+        console.log(this.genClassment);
+      });
+      //this.chartData.push({ data: this.genClassment, label: 'Account A' });
+      //this.refresh_chart()
+
+    //  console.log(this.chartData[0].data);
     });
   }
+
+ /* refresh_chart() {
+    setTimeout(() => {
+      if (this.chart && this.chart.chart && this.chart.chart.config) {
+        this.chartData.length = 0;
+        this.chartData.push( {data: this.genClassment, label : "test"});
+        this.chart.chart.update();
+      }
+    });
+  } */
+
 
 }
