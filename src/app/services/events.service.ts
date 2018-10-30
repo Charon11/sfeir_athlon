@@ -7,6 +7,7 @@ import {EventRank} from '../models/event-rank';
 import * as _ from 'lodash';
 import {TeamleaderEvent} from '../models/teamleader-event';
 
+
 @Injectable()
 export class EventsService {
 
@@ -35,14 +36,14 @@ export class EventsService {
     });
   }
 
-  getEventsClassementAllTL(events): object  {
+  getEventsClassementAllTL(events): any  {
     // Recupère le classement de tous les évènements qui ont eu lieu
     const classement = events.map(e => e.classement).reduce((result: Array<EventRank>, c) => result.concat(c), []);
     // Regroupe les classements des évènements par team leader
     return _.groupBy(classement, 'tl.id');
   }
 
-  getNEventsClassementAllTL(events, n): object  {
+  getNEventsClassementAllTL(events, n): any {
     // Recupère le classement de tous les évènements qui ont eu lieu
     const sliceEvents = events.slice(0, n);
     const classement = sliceEvents.map(e => e.classement).reduce((result: Array<EventRank>, c) => result.concat(c), []);
@@ -99,17 +100,23 @@ export class EventsService {
       });
   }
 
-  getGroupedTeamLeadersAfterEveryEvents(): Observable<Array<Array<RankedTeamleader>>> {
-    const classmtEveryEvents: Array<Array<RankedTeamleader>> = [];
+  getClassmentEveryEventGeneralByTL(tl: RankedTeamleader): Observable<Map<string, number>> {
+    const classmtEveryEventGenByTL: Map<string, number> = new Map<string, number>();
     return this._events.valueChanges()
       .map(events => {
-        for (const event in events) {
+        for (let event = 1; event < events.length; event++) {
           const  eventsClassment = this.getNEventsClassementAllTL(events, event);
           const pointAndPlace = this.getPointsAndPlaceAllTL(eventsClassment);
           const rtl: Array<RankedTeamleader> = this.sortRankedTeamLeader(pointAndPlace);
-          classmtEveryEvents.push(rtl);
+            for (let key2 = 0; key2 < rtl.length; key2++) {
+              const teamleader =  rtl[key2].teamleader.onSnapshot(doc => {
+                if (doc.data().lastname === tl.lastname) {
+                  classmtEveryEventGenByTL.set(events[event].name, rtl[key2].classement);
+                }
+              });
+          }
         }
-        return classmtEveryEvents;
+        return classmtEveryEventGenByTL;
       });
   }
 
