@@ -29,7 +29,8 @@ export class LeaderboardComponent implements OnInit {
 
   onCardClick(item: RankedTeamleader) {
     const dialogRef = this.dialog.open(CompetitorEventsDialogComponent, {
-      width: '90%'
+      width: '90%',
+      height: '100%'
     });
     dialogRef.componentInstance.teamLeaderId = item.teamleader.id;
     dialogRef.componentInstance.displayName = item.displayName;

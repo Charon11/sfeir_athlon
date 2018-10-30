@@ -12,6 +12,17 @@
     {{displayName}}
   </div>
 </div>
+<div id='chart' style="width: 40%;">
+  <canvas #baseChart="base-chart"
+          baseChart
+          [chartType]="'line'"
+          [datasets]="chartData"
+          [labels]="chartLabels"
+          [options]="chartOptions"
+          [legend]="true"
+         >
+  </canvas>
+</div>
 <div mat-dialog-content fxLayout="column" fxLayoutGap="10px">
   <mat-card *ngFor="let e of (events | async | filterTeamLeaderEvent)">
     <mat-card-header>

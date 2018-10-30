@@ -13,16 +13,14 @@ import {BaseChartDirective} from 'ng2-charts';
 })
 export class CompetitorComponent implements OnInit {
 
-  @ViewChild("baseChart") chart: BaseChartDirective;
-
   @Input('teamleader') private _teamLeader: RankedTeamleader;
   private _photoUrl;
 
-  private genClassment: Map<string, number> = new Map<string, number>() ;
+
 
   private labels_line = Array<any>();
 
-  constructor(private _sanitizer: DomSanitizer, private _eventsService: EventsService) {
+  constructor(private _sanitizer: DomSanitizer) {
 
   }
 
@@ -35,19 +33,6 @@ export class CompetitorComponent implements OnInit {
     return this._teamLeader;
   }
 
-  chartOptions = {
-    responsive: true
-  };
-
-  chartData = [
-    { data: [], label: 'Account A' },
-  ];
-
-  chartLabels = ['January', 'February', 'Mars', 'April', 'Mai', 'June', 'Jully'];
-
-  onChartClick(event) {
-    console.log(event);
-  }
 
   ngOnInit() {
     this._teamLeader.teamleader.onSnapshot(doc => {
@@ -56,16 +41,7 @@ export class CompetitorComponent implements OnInit {
       this._teamLeader.photo = doc.data().photo;
       this._teamLeader.displayName = doc.data().displayName;
       this._photoUrl = this._sanitizer.bypassSecurityTrustStyle(`url(${this._teamLeader.photo})`);
-
-      this._eventsService.getClassmentEveryEventGeneralByTL(this._teamLeader).subscribe((result) => {
-        this.genClassment = result;
-        console.log(this._teamLeader.lastname);
-        console.log(this.genClassment);
-      });
-      //this.chartData.push({ data: this.genClassment, label: 'Account A' });
-      //this.refresh_chart()
-
-    //  console.log(this.chartData[0].data);
+    //  this.refresh_chart();
     });
   }
 
@@ -73,8 +49,11 @@ export class CompetitorComponent implements OnInit {
     setTimeout(() => {
       if (this.chart && this.chart.chart && this.chart.chart.config) {
         this.chartData.length = 0;
-        this.chartData.push( {data: this.genClassment, label : "test"});
-        this.chart.chart.update();
+        const arrayChartData: Array<number> = [];
+        this.genClassment.forEach((value: number , key: string) => {
+          arrayChartData.push(value);
+        })
+        this.chartData.push( {data: arrayChartData, label : 'test'});
       }
     });
   } */

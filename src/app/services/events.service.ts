@@ -100,18 +100,24 @@ export class EventsService {
       });
   }
 
-  getClassmentEveryEventGeneralByTL(tl: RankedTeamleader): Observable<Map<string, number>> {
+  getClassmentEveryEventGeneralByTL(tl: string): Observable<Map<string, number>> {
     const classmtEveryEventGenByTL: Map<string, number> = new Map<string, number>();
+
     return this._events.valueChanges()
       .map(events => {
-        for (let event = 1; event < events.length; event++) {
+        events = _.sortBy(events, function(dateObj) {
+          return new Date(dateObj.date);
+        });
+        for (let event = 1; event <= events.length; event++) {
           const  eventsClassment = this.getNEventsClassementAllTL(events, event);
           const pointAndPlace = this.getPointsAndPlaceAllTL(eventsClassment);
           const rtl: Array<RankedTeamleader> = this.sortRankedTeamLeader(pointAndPlace);
             for (let key2 = 0; key2 < rtl.length; key2++) {
               const teamleader =  rtl[key2].teamleader.onSnapshot(doc => {
-                if (doc.data().lastname === tl.lastname) {
-                  classmtEveryEventGenByTL.set(events[event].name, rtl[key2].classement);
+                const displayName: string = doc.data().displayName;
+                if (doc.data().displayName === tl) {
+                  const name = events[event-1].name;
+                  classmtEveryEventGenByTL.set(events[event-1].name, rtl[key2].classement);
                 }
               });
           }
