@@ -1,6 +1,21 @@
 .table
-  display: table
+  display: flex
   padding-bottom: 10px
+  align-items: center
+  justify-content: flex-start
+
+#picture
+  height: 90px
+  width: 90px
+  background-position: center
+  background-size: cover
+  border-radius: 50%
+
+#name
+  padding-bottom: 30px
+  font-size: 20px
+  font-weight: 700
+  padding-left: 10px
 
 .cell
   display: table-cell
@@ -9,6 +24,21 @@
   font-size: 20px
   font-weight: bold
 
-#chart
-    margin: 0 auto
-    margin-bottom: 10px
+#chartContainer
+    flex: 3
+    margin-left: 50px
+    position: relative
+
+
+@media (max-width: 1100px)
+  .table
+    display: flex
+    flex-direction: column
+
+  #name
+    padding-left: 0px
+    margin-top: 10px
+
+  #chart
+    width: 100% !important
+

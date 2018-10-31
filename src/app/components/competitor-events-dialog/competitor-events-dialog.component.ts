@@ -1,9 +1,10 @@
-import {AfterViewInit, Component, Inject, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {EventsService} from '../../services/events.service';
 import {Observable} from 'rxjs/Observable';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {TeamleaderEvent} from '../../models/teamleader-event';
 import {DomSanitizer} from '@angular/platform-browser';
+import {BaseChartDirective} from 'ng2-charts';
 
 @Component({
   selector: 'app-competitor-events-dialog',
@@ -28,6 +29,21 @@ export class CompetitorEventsDialogComponent implements OnInit {
 
   }
 
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.chart.chart.update();
+    console.log("hey");
+  }
+
+   beforePrintHandler () {
+
+    for (const id in this.chart.chart.instances) {
+      this.chart.chart.instances[id].resize();
+    }
+  }
+
   ngOnInit() {
     this._events = this._eventsService.teamLeaderEvents(this.teamLeaderId);
 
@@ -41,7 +57,7 @@ export class CompetitorEventsDialogComponent implements OnInit {
       const that = this;
       setTimeout( function() {
           console.log(that.genClassment.size);
-          that.genClassment.forEach((key,value) => {
+          that.genClassment.forEach((key, value) => {
             that.arrayChartData.push(key);
             that.arrayChartLabel.push(value);
           });
@@ -57,17 +73,35 @@ export class CompetitorEventsDialogComponent implements OnInit {
 
   chartOptions = {
     responsive: true,
+    responsiveAnimationDuration : 1000,
+    legend: {
+      display: false
+    },
+    elements: {
+      line: {
+        tension: 0
+      }
+    },
     scales: {
       xAxes: [{
         ticks: {
           display: false //this will remove only the label
-        }
+        },
+        gridLines: {
+          display: false,
+          drawBorder: false
+        },
       }],
       yAxes: [{
         ticks: {
           reverse: true,
           suggestedMin: 1,
-          suggestedMax: 7,
+          suggestedMax: 7, //TODO : Taille de la liste des RTL
+          display: false
+        },
+        gridLines: {
+          display: false,
+          drawBorder: false
         }
       }]
     }
@@ -87,6 +121,7 @@ export class CompetitorEventsDialogComponent implements OnInit {
   get photoUrl() {
     return this._sanitizer.bypassSecurityTrustStyle(`url(${this.photo})`);
   }
+
 
 
 
