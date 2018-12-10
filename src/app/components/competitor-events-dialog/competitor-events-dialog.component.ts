@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Inject, Input, OnInit, ViewChild} from '@angular/core';
-import {EventsService} from '../../services/events.service';
-import {Observable} from 'rxjs/Observable';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {TeamleaderEvent} from '../../models/teamleader-event';
-import {DomSanitizer} from '@angular/platform-browser';
-import {BaseChartDirective} from 'ng2-charts';
+import { AfterViewInit, Component, ElementRef, HostListener, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { EventsService } from '../../services/events.service';
+import { Observable } from 'rxjs/Observable';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { TeamleaderEvent } from '../../models/teamleader-event';
+import { DomSanitizer } from '@angular/platform-browser';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-competitor-events-dialog',
@@ -20,60 +20,36 @@ export class CompetitorEventsDialogComponent implements OnInit {
   private arrayChartData: Array<number> = [];
   private arrayChartLabel: Array<string> = [];
 
-  private genClassment: Map<string, number> = new Map<string, number>() ;
 
   constructor(private _eventsService: EventsService,
-              private _sanitizer: DomSanitizer,
-              public dialogRef: MatDialogRef<CompetitorEventsDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+    private _sanitizer: DomSanitizer,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
 
-  }
-
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.chart.chart.update();
-    console.log("hey");
-  }
-
-   beforePrintHandler () {
-
-    for (const id in this.chart.chart.instances) {
-      this.chart.chart.instances[id].resize();
-    }
-  }
-
-  ngOnInit() {
-    this._events = this._eventsService.teamLeaderEvents(this.teamLeaderId);
-
-    this._eventsService.getClassmentEveryEventGeneralByTL(this.displayName).subscribe((result) => {
-      this.genClassment = result;
-      console.log(result);
-      console.log(this.displayName);
-      console.log(this.genClassment);
-      console.log('Taille de la map : ');
-      console.log(this.genClassment.size);
-      const that = this;
-      setTimeout( function() {
-          console.log(that.genClassment.size);
-          that.genClassment.forEach((key, value) => {
-            that.arrayChartData.push(key);
-            that.arrayChartLabel.push(value);
-          });
-        that.updateChart();
-      }, 100);
-
-    });
-  }
-
-  updateChart() {
-    this.chartData = this.chartData.slice();
   }
 
   chartOptions = {
     responsive: true,
-    responsiveAnimationDuration : 1000,
+    animation: {
+      onComplete: function () {
+        const chartInstance = this.chart,
+          ctx = chartInstance.ctx;
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+
+        this.data.datasets.forEach(function (dataset, i) {
+          const meta = chartInstance.controller.getDatasetMeta(i);
+          meta.data.forEach(function (bar, index) {
+            const data = dataset.data[index];
+            ctx.fillText(data, bar._model.x, bar._model.y - 5);
+          });
+        });
+      }
+    },
+    layout: {
+      padding: {right: 10, top: 20}
+    },
+    responsiveAnimationDuration: 0,
     legend: {
       display: false
     },
@@ -85,7 +61,7 @@ export class CompetitorEventsDialogComponent implements OnInit {
     scales: {
       xAxes: [{
         ticks: {
-          display: false //this will remove only the label
+          display: false // this will remove only the label
         },
         gridLines: {
           display: false,
@@ -96,7 +72,7 @@ export class CompetitorEventsDialogComponent implements OnInit {
         ticks: {
           reverse: true,
           suggestedMin: 1,
-          suggestedMax: 7, //TODO : Taille de la liste des RTL
+          suggestedMax: 10  , // TODO : Taille de la liste des RTL
           display: false
         },
         gridLines: {
@@ -107,19 +83,41 @@ export class CompetitorEventsDialogComponent implements OnInit {
     }
   };
 
-  chartData = [
-    { fill : false, data: this.arrayChartData, label: 'Classement' },
+  private _chartData = [
+    { fill: false, data: this.arrayChartData, label: 'Classement' },
   ];
 
   chartLabels = this.arrayChartLabel;
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+
+  @HostListener('window:resize')
+  onResize() {
+    this.chart.chart.update();
+  }
+
+  ngOnInit() {
+    this._events = this._eventsService.teamLeaderEvents(this.teamLeaderId);
+
+    this._eventsService.getClassmentEveryEventGeneralByTL(this.teamLeaderId).subscribe((result) => {
+        result.forEach((key, value) => {
+          this.arrayChartData.push(key);
+          this.arrayChartLabel.push(value);
+        });
+        this.chart.chart.update();
+    });
+  }
 
 
-  get events(): Observable < Array < TeamleaderEvent >> {
+  get events(): Observable<Array<TeamleaderEvent>> {
     return this._events;
   }
 
   get photoUrl() {
     return this._sanitizer.bypassSecurityTrustStyle(`url(${this.photo})`);
+  }
+
+  get chartData() {
+    return this._chartData;
   }
 
 

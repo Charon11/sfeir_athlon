@@ -32,6 +32,7 @@
     "angular2-markdown": "^2.2.3",
     "angularfire2": "^5.0.0-rc.5-next",
     "chart.js": "^2.7.3",
+    "chartjs-plugin-datalabels": "^0.4.0",
     "core-js": "^2.5.5",
     "express": "^4.16.2",
     "firebase": "^4.12.1",

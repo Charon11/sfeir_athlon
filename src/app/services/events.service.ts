@@ -36,7 +36,7 @@ export class EventsService {
     });
   }
 
-  getEventsClassementAllTL(events): any  {
+  getEventsClassementAllTL(events): any {
     // Recupère le classement de tous les évènements qui ont eu lieu
     const classement = events.map(e => e.classement).reduce((result: Array<EventRank>, c) => result.concat(c), []);
     // Regroupe les classements des évènements par team leader
@@ -54,21 +54,19 @@ export class EventsService {
   getPointsAndPlace(eventsClassment, classment): RankedTeamleader {
     const er = eventsClassment[classment];
     const rtl: RankedTeamleader = <RankedTeamleader>{
-      teamleader : er[0].tl,
+      teamleader: er[0].tl,
       points: er.reduce((p, c) => p + c.points, 0),
       places: er.reduce((p, c) => p + c.rank, 0),
     };
     return rtl;
   }
 
-  getPointsAndPlaceAllTL(eventsClassment): Array<RankedTeamleader>  {
+  getPointsAndPlaceAllTL(eventsClassment): Array<RankedTeamleader> {
     // Calcule la somme des points ainsi que la somme des places de chaque TL
     const gtl: Array<RankedTeamleader> = [];
 
     for (const classment in eventsClassment) {
-      const rtl: RankedTeamleader = this.getPointsAndPlace(eventsClassment, classment);
-      // Ajout de chaque Ranked TL avec ses points ainsi que ses places
-      gtl.push(rtl);
+      gtl.push(this.getPointsAndPlace(eventsClassment, classment));
     }
     return gtl;
   }
@@ -79,7 +77,7 @@ export class EventsService {
       if (a.points === b.points) {
         return (a.places) - (b.places);
       } else {
-        return (b.points ) - (a.points);
+        return (b.points) - (a.points);
       }
       // return (b.points ) - (a.points);
     }).map((t, i) => {
@@ -101,26 +99,23 @@ export class EventsService {
   }
 
   getClassmentEveryEventGeneralByTL(tl: string): Observable<Map<string, number>> {
-    const classmtEveryEventGenByTL: Map<string, number> = new Map<string, number>();
 
     return this._events.valueChanges()
       .map(events => {
-        events = _.sortBy(events, function(dateObj) {
+        const classmtEveryEventGenByTL: Map<string, number> = new Map<string, number>();
+
+        events = _.sortBy(events, function (dateObj) {
           return new Date(dateObj.date);
         });
         for (let event = 1; event <= events.length; event++) {
-          const  eventsClassment = this.getNEventsClassementAllTL(events, event);
+          const eventsClassment = this.getNEventsClassementAllTL(events, event);
           const pointAndPlace = this.getPointsAndPlaceAllTL(eventsClassment);
           const rtl: Array<RankedTeamleader> = this.sortRankedTeamLeader(pointAndPlace);
-            for (let key2 = 0; key2 < rtl.length; key2++) {
-              const teamleader =  rtl[key2].teamleader.onSnapshot(doc => {
-                const displayName: string = doc.data().displayName;
-                if (doc.data().displayName === tl) {
-                  const name = events[event-1].name;
-                  classmtEveryEventGenByTL.set(events[event-1].name, rtl[key2].classement);
-                }
-              });
-          }
+          rtl.forEach(r => {
+            if (r.teamleader.id === tl) {
+              classmtEveryEventGenByTL.set(events[event - 1].name, r.classement);
+            }
+          });
         }
         return classmtEveryEventGenByTL;
       });
