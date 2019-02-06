@@ -8,4 +8,7 @@ export interface TeamLeader {
   displayName?: string;
   safeImage?: any;
   places?: number;
+  team: string;
+  id?: string;
+  ref: any;
 }

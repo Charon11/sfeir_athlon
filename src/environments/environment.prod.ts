@@ -7,5 +7,9 @@ export const environment = {
     projectId: 'sfeir-athlon',
     storageBucket: 'sfeir-athlon.appspot.com',
     messagingSenderId: '1068492240053'
+  },
+  collections : {
+    tl: 'team-leaders',
+    events: 'events-2019'
   }
 };

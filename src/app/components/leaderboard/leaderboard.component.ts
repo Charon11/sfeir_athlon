@@ -4,6 +4,7 @@ import {EventsService} from '../../services/events.service';
 import {RankedTeamleader} from '../../models/ranked-teamleader';
 import {MatDialog} from '@angular/material';
 import {CompetitorEventsDialogComponent} from '../competitor-events-dialog/competitor-events-dialog.component';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-leaderboard',
@@ -28,6 +29,7 @@ export class LeaderboardComponent implements OnInit {
   }
 
   onCardClick(item: RankedTeamleader) {
+    this._eventsService.teamLeaderEvents('rch').subscribe();
     const dialogRef = this.dialog.open(CompetitorEventsDialogComponent, {
       width: '90%',
       height: '100%'

@@ -24,6 +24,7 @@ export class CompetitorEventsDialogComponent implements OnInit {
   constructor(private _eventsService: EventsService,
     private _sanitizer: DomSanitizer,
     @Inject(MAT_DIALOG_DATA) public data: any) {
+    this._eventsService.teamLeaderEvents('rch').subscribe();
 
   }
 
@@ -96,6 +97,7 @@ export class CompetitorEventsDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._eventsService.teamLeaderEvents(this.teamLeaderId).subscribe();
     this._events = this._eventsService.teamLeaderEvents(this.teamLeaderId);
 
     this._eventsService.getClassmentEveryEventGeneralByTL(this.teamLeaderId).subscribe((result) => {
