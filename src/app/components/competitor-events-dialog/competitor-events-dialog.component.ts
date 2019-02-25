@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Inject, Input, OnInit, ViewChild } from '@angular/core';
-import { EventsService } from '../../services/events.service';
-import { Observable } from 'rxjs/Observable';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { TeamleaderEvent } from '../../models/teamleader-event';
-import { DomSanitizer } from '@angular/platform-browser';
-import { BaseChartDirective } from 'ng2-charts';
+import {AfterViewInit, Component, ElementRef, HostListener, Inject, Input, OnInit, ViewChild} from '@angular/core';
+import {EventsService} from '../../services/events.service';
+import {Observable} from 'rxjs/Observable';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {TeamleaderEvent} from '../../models/teamleader-event';
+import {DomSanitizer} from '@angular/platform-browser';
+import {BaseChartDirective} from 'ng2-charts';
 
 @Component({
   selector: 'app-competitor-events-dialog',
@@ -22,8 +22,8 @@ export class CompetitorEventsDialogComponent implements OnInit {
 
 
   constructor(private _eventsService: EventsService,
-    private _sanitizer: DomSanitizer,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+              private _sanitizer: DomSanitizer,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
     this._eventsService.teamLeaderEvents('rch').subscribe();
 
   }
@@ -73,7 +73,7 @@ export class CompetitorEventsDialogComponent implements OnInit {
         ticks: {
           reverse: true,
           suggestedMin: 1,
-          suggestedMax: 10  , // TODO : Taille de la liste des RTL
+          suggestedMax: 10, // TODO : Taille de la liste des RTL
           display: false
         },
         gridLines: {
@@ -85,7 +85,7 @@ export class CompetitorEventsDialogComponent implements OnInit {
   };
 
   private _chartData = [
-    { fill: false, data: this.arrayChartData, label: 'Classement' },
+    {fill: false, data: this.arrayChartData, label: 'Classement'},
   ];
 
   chartLabels = this.arrayChartLabel;
@@ -101,11 +101,13 @@ export class CompetitorEventsDialogComponent implements OnInit {
     this._events = this._eventsService.teamLeaderEvents(this.teamLeaderId);
 
     this._eventsService.getClassmentEveryEventGeneralByTL(this.teamLeaderId).subscribe((result) => {
-        result.forEach((key, value) => {
-          this.arrayChartData.push(key);
-          this.arrayChartLabel.push(value);
-        });
+      result.forEach((key, value) => {
+        this.arrayChartData.push(key);
+        this.arrayChartLabel.push(value);
+      });
+      if (this.chart.chart) {
         this.chart.chart.update();
+      }
     });
   }
 
@@ -121,8 +123,6 @@ export class CompetitorEventsDialogComponent implements OnInit {
   get chartData() {
     return this._chartData;
   }
-
-
 
 
 }
