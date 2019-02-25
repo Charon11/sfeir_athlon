@@ -36,26 +36,37 @@ export class EventsService {
   get events(): Observable<Array<Event>> {
     return this._teamLeaders$.pipe(
       combineLatest(this._events$, (a, b) => ({tls: a, events: b})),
-      map((x) => {
+      map(x => {
           return x.events.map(event => {
-            const classement: Map<string, { points: number, rank: number, team: any }> = new Map();
-            event.individualClassement.forEach(c => {
-              if (classement.has(c.team.id)) {
-                if (c.rank <= x.tls.length) {
-                  classement.set(c.team.id, {
-                    points: (classement.get(c.team.id).points + 1),
-                    rank: classement.get(c.team.id).rank,
+            let classement: Map<string, { points: number, rank: number, team: any }> = new Map();
+            const tempClassement: Map<string, { points: number, rank: number, team: any }> = new Map();
+            let currentInvidualRank = 1;
+            let currentPoint = x.tls.length;
+            if (event.individualClassement) {
+              event.individualClassement.forEach(c => {
+                if (currentInvidualRank < c.rank) {
+                  tempClassement.forEach((value, key) => classement.set(key, value));
+                  currentPoint--;
+                }
+                currentInvidualRank = c.rank;
+                if (tempClassement.has(c.team.id)) {
+                  if (c.rank <= x.tls.length) {
+                    tempClassement.set(c.team.id, {
+                      points: (tempClassement.get(c.team.id).points + 1),
+                      rank: tempClassement.get(c.team.id).rank,
+                      team: c.team
+                    });
+                  }
+                } else {
+                  tempClassement.set(c.team.id, {
+                    points: currentPoint,
+                    rank: c.rank,
                     team: c.team
                   });
                 }
-              } else {
-                classement.set(c.team.id, {
-                  points: (x.tls.length - classement.size),
-                  rank: c.rank,
-                  team: c.team
-                });
-              }
-            });
+              });
+            }
+            classement = tempClassement;
             const rank = classement.size + 1;
             x.tls.forEach(tl => {
                 if (!classement.has(tl.team)) {
@@ -82,7 +93,9 @@ export class EventsService {
           }).sort((a: Event, b: Event) => b.date.getTime() - a.date.getTime());
         }
       ),
-      tap(x => this._eventsBehaviorSubject.next(x))
+
+      tap(x => this._eventsBehaviorSubject.next(x)
+      )
     );
   }
 
@@ -174,7 +187,6 @@ export class EventsService {
   }
 
   getClassmentEveryEventGeneralByTL(tl: string): Observable<Map<string, number>> {
-
     return this.eventsBehaviorSubject
       .map(events => {
         const classmtEveryEventGenByTL: Map<string, number> = new Map<string, number>();
@@ -183,8 +195,8 @@ export class EventsService {
           return new Date(dateObj.date);
         });
         for (let event = 1; event <= events.length; event++) {
-          const eventsClassment = this.getNEventsClassementAllTL(events, event);
-          const pointAndPlace = this.getPointsAndPlaceAllTL(eventsClassment);
+          const eventsClassement = this.getNEventsClassementAllTL(events, event);
+          const pointAndPlace = this.getPointsAndPlaceAllTL(eventsClassement);
           const rtl: Array<RankedTeamleader> = this.sortRankedTeamLeader(pointAndPlace);
           rtl.forEach(r => {
             if (r.teamleader.id === tl) {
