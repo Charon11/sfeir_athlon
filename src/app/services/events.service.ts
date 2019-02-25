@@ -67,10 +67,9 @@ export class EventsService {
               });
             }
             classement = tempClassement;
-            const rank = classement.size + 1;
             x.tls.forEach(tl => {
                 if (!classement.has(tl.team)) {
-                  classement.set(tl.team, {points: 0, rank: rank, team: tl.ref});
+                  classement.set(tl.team, {points: 0, rank: classement.size + 1, team: tl.ref});
                 }
               }
             );
@@ -79,7 +78,7 @@ export class EventsService {
             event.classement = [];
             Array.from(classement.values()).sort(this.sortEventClassement)
               .forEach((value, index) => {
-                if (previousClas.points !== value.points && previousClas.rank !== value.rank) {
+                if (previousClas.points !== value.points || (previousClas.points === value.points && previousClas.rank !== value.rank)) {
                   currentRank += 1;
                 }
                 previousClas = {points: value.points, rank: value.rank};
