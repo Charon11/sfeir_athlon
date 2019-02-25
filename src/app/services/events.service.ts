@@ -67,9 +67,10 @@ export class EventsService {
               });
             }
             classement = tempClassement;
+            const unrankTL = classement.size + 1
             x.tls.forEach(tl => {
                 if (!classement.has(tl.team)) {
-                  classement.set(tl.team, {points: 0, rank: classement.size + 1, team: tl.ref});
+                  classement.set(tl.team, {points: 0, rank: unrankTL, team: tl.ref});
                 }
               }
             );
@@ -151,6 +152,7 @@ export class EventsService {
 
   sortRankedTeamLeader(gtl): Array<RankedTeamleader> {
     // Trie La liste des RTL en fonction d'abord du nombre de points puis du nombre de place
+    let currentPoint, currentPlace = 0
     gtl.sort((a: RankedTeamleader, b: RankedTeamleader) => {
       if (a.points === b.points) {
         return (a.places) - (b.places);
@@ -158,8 +160,12 @@ export class EventsService {
         return (b.points) - (a.points);
       }
       // return (b.points ) - (a.points);
-    }).forEach((t, i) => {
-      t.classement = i + 1;
+    }).forEach((t) => {
+      if (currentPoint !== t.points || (currentPoint === t.points && currentPlace !== t.places)) {
+        currentPlace++;
+      }
+      t.classement = currentPlace;
+      currentPoint = t.points;
       return t;
     });
     return gtl;
