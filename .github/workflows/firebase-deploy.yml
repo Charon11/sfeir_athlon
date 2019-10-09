@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: npm i
       - name: Build Application
-        run: npm run dist
+        run: ng build --prod --aot
       - name: Deploy Firebase Host
         uses: pizzafox/firebase-action@master
         env:
