@@ -5,10 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AppComponent } from './components/app/app.component';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireStorageModule } from 'angularfire2/storage';
-import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { NgxMdModule } from 'ngx-md';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -17,6 +17,10 @@ import { ChartsModule } from 'ng2-charts';
 import { environment } from '../environments/environment';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { HttpClientModule } from '@angular/common/http';
+
+
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -122,7 +126,8 @@ import { FilterTeamleaderEventPipe } from './pipes/filter-teamleader-event.pipe'
     NgxMdModule.forRoot(),
     FontAwesomeModule,
     FlexLayoutModule,
-    ChartsModule
+    ChartsModule,
+    HttpClientModule
   ],
   entryComponents: [
     CompetitorEventsDialogComponent

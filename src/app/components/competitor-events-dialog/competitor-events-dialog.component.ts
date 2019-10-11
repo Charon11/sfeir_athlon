@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Inject, Input, OnInit, ViewChild} from '@angular/core';
-import {EventsService} from '../../services/events.service';
-import {Observable} from 'rxjs';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {TeamleaderEvent} from '../../models/teamleader-event';
-import {DomSanitizer} from '@angular/platform-browser';
-import {BaseChartDirective} from 'ng2-charts';
+import { AfterViewInit, Component, ElementRef, HostListener, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { EventsService } from '../../services/events.service';
+import { Observable } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { TeamleaderEvent } from '../../models/teamleader-event';
+import { DomSanitizer } from '@angular/platform-browser';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-competitor-events-dialog',
@@ -22,8 +22,8 @@ export class CompetitorEventsDialogComponent implements OnInit {
 
 
   constructor(private _eventsService: EventsService,
-              private _sanitizer: DomSanitizer,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+    private _sanitizer: DomSanitizer,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     this._eventsService.teamLeaderEvents('rch').subscribe();
 
   }
@@ -48,7 +48,7 @@ export class CompetitorEventsDialogComponent implements OnInit {
       }
     },
     layout: {
-      padding: {right: 10, top: 20}
+      padding: { right: 10, top: 20 }
     },
     responsiveAnimationDuration: 0,
     legend: {
@@ -85,11 +85,11 @@ export class CompetitorEventsDialogComponent implements OnInit {
   };
 
   private _chartData = [
-    {fill: false, data: this.arrayChartData, label: 'Classement'},
+    { fill: false, data: this.arrayChartData, label: 'Classement' },
   ];
 
   chartLabels = this.arrayChartLabel;
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+  @ViewChild(BaseChartDirective, { static: true }) chart: BaseChartDirective;
 
   @HostListener('window:resize')
   onResize() {
