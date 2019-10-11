@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, HostListener, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {EventsService} from '../../services/events.service';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {TeamleaderEvent} from '../../models/teamleader-event';
 import {DomSanitizer} from '@angular/platform-browser';

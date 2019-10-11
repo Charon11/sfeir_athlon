@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Event} from '../models/event';
-import {Observable} from 'rxjs/Observable';
+import {Observable, BehaviorSubject} from 'rxjs';
 import {AngularFirestore, AngularFirestoreCollection} from 'angularfire2/firestore';
 import {RankedTeamleader} from '../models/ranked-teamleader';
 import {EventRank} from '../models/event-rank';
@@ -8,7 +8,6 @@ import * as _ from 'lodash';
 import {TeamleaderEvent} from '../models/teamleader-event';
 import {TeamLeader} from '../models/team-leader';
 import {combineLatest, map, tap} from 'rxjs/operators';
-import {BehaviorSubject} from 'rxjs';
 import {environment} from '../../environments/environment';
 
 
@@ -192,8 +191,8 @@ export class EventsService {
   }
 
   getClassmentEveryEventGeneralByTL(tl: string): Observable<Map<string, number>> {
-    return this.eventsBehaviorSubject
-      .map(events => {
+    return this.eventsBehaviorSubject.pipe(
+      map(events => {
         const classmtEveryEventGenByTL: Map<string, number> = new Map<string, number>();
 
         events = _.sortBy(events, function (dateObj) {
@@ -210,7 +209,7 @@ export class EventsService {
           });
         }
         return classmtEveryEventGenByTL;
-      });
+      }));
   }
 
 
