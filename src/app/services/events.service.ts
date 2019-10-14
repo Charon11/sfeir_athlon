@@ -1,15 +1,14 @@
-import {Injectable} from '@angular/core';
-import {Event} from '../models/event';
-import {Observable} from 'rxjs/Observable';
-import {AngularFirestore, AngularFirestoreCollection} from 'angularfire2/firestore';
-import {RankedTeamleader} from '../models/ranked-teamleader';
-import {EventRank} from '../models/event-rank';
+import { Injectable } from '@angular/core';
+import { Event } from '../models/event';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { RankedTeamleader } from '../models/ranked-teamleader';
+import { EventRank } from '../models/event-rank';
 import * as _ from 'lodash';
-import {TeamleaderEvent} from '../models/teamleader-event';
-import {TeamLeader} from '../models/team-leader';
-import {combineLatest, map, tap} from 'rxjs/operators';
-import {BehaviorSubject} from 'rxjs';
-import {environment} from '../../environments/environment';
+import { TeamleaderEvent } from '../models/teamleader-event';
+import { TeamLeader } from '../models/team-leader';
+import { combineLatest, map, tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 
 @Injectable()
@@ -35,64 +34,65 @@ export class EventsService {
 
   get events(): Observable<Array<Event>> {
     return this._teamLeaders$.pipe(
-      combineLatest(this._events$, (a, b) => ({tls: a, events: b})),
+      combineLatest(this._events$, (a, b) => ({ tls: a, events: b })),
       map(x => {
-          return x.events.map(event => {
-            let classement: Map<string, { points: number, rank: number, team: any }> = new Map();
-            const tempClassement: Map<string, { points: number, rank: number, team: any }> = new Map();
-            let currentInvidualRank = 1;
-            let currentPoint = x.tls.length;
-            if (event.individualClassement) {
-              event.individualClassement.forEach(c => {
-                if (currentInvidualRank < c.rank) {
-                  tempClassement.forEach((value, key) => classement.set(key, value));
-                  currentPoint--;
-                }
-                currentInvidualRank = c.rank;
-                if (tempClassement.has(c.team.id)) {
-                  if (c.rank <= x.tls.length) {
-                    tempClassement.set(c.team.id, {
-                      points: (tempClassement.get(c.team.id).points + 1),
-                      rank: tempClassement.get(c.team.id).rank,
-                      team: c.team
-                    });
-                  }
-                } else {
+        return x.events.map(event => {
+          let classement: Map<string, { points: number, rank: number, team: any }> = new Map();
+          const tempClassement: Map<string, { points: number, rank: number, team: any }> = new Map();
+          let currentInvidualRank = 1;
+          let currentPoint = x.tls.length;
+          if (event.individualClassement) {
+            event.individualClassement.forEach(c => {
+              if (currentInvidualRank < c.rank) {
+                tempClassement.forEach((value, key) => classement.set(key, value));
+                currentPoint--;
+              }
+              currentInvidualRank = c.rank;
+              if (tempClassement.has(c.team.id)) {
+                if (c.rank <= x.tls.length) {
                   tempClassement.set(c.team.id, {
-                    points: currentPoint,
-                    rank: c.rank,
+                    points: (tempClassement.get(c.team.id).points + 1),
+                    rank: tempClassement.get(c.team.id).rank,
                     team: c.team
                   });
                 }
-              });
-            }
-            classement = tempClassement;
-            const unrankTL = classement.size + 1
-            x.tls.forEach(tl => {
-                if (!classement.has(tl.team)) {
-                  classement.set(tl.team, {points: 0, rank: unrankTL, team: tl.ref});
-                }
-              }
-            );
-            let previousClas: { points: number, rank: number } = {points: 0, rank: 0};
-            let currentRank = 0;
-            event.classement = [];
-            Array.from(classement.values()).sort(this.sortEventClassement)
-              .forEach((value, index) => {
-                if (previousClas.points !== value.points || (previousClas.points === value.points && previousClas.rank !== value.rank)) {
-                  currentRank += 1;
-                }
-                previousClas = {points: value.points, rank: value.rank};
-                event.classement.push(<EventRank>{
-                  points: value.points,
-                  tl: value.team,
-                  rank: currentRank
+              } else {
+                tempClassement.set(c.team.id, {
+                  points: currentPoint,
+                  rank: c.rank,
+                  team: c.team
                 });
+              }
+            });
+          }
+          classement = tempClassement;
+          const unrankTL = classement.size + 1
+          x.tls.forEach(tl => {
+            if (!classement.has(tl.team)) {
+              classement.set(tl.team, { points: 0, rank: unrankTL, team: tl.ref });
+            }
+          }
+          );
+          let previousClas: { points: number, rank: number } = { points: 0, rank: 0 };
+          let currentRank = 0;
+          event.classement = [];
+          Array.from(classement.values()).sort(this.sortEventClassement)
+            .forEach((value, index) => {
+              if (previousClas.points !== value.points || (previousClas.points === value.points && previousClas.rank !== value.rank)) {
+                currentRank += 1;
+              }
+              previousClas = { points: value.points, rank: value.rank };
+              event.classement.push(<EventRank>{
+                points: value.points,
+                tl: value.team,
+                rank: currentRank
               });
-            return event;
-          }).sort((a: Event, b: Event) => b.date.getTime() - a.date.getTime());
-        }
-      ),
+            });
+          return event;
+        }).sort((a: Event, b: Event) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime()
+        });
+      }),
 
       tap(x => this._eventsBehaviorSubject.next(x)
       )
@@ -192,8 +192,8 @@ export class EventsService {
   }
 
   getClassmentEveryEventGeneralByTL(tl: string): Observable<Map<string, number>> {
-    return this.eventsBehaviorSubject
-      .map(events => {
+    return this.eventsBehaviorSubject.pipe(
+      map(events => {
         const classmtEveryEventGenByTL: Map<string, number> = new Map<string, number>();
 
         events = _.sortBy(events, function (dateObj) {
@@ -210,7 +210,7 @@ export class EventsService {
           });
         }
         return classmtEveryEventGenByTL;
-      });
+      }));
   }
 
 

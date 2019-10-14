@@ -2,7 +2,7 @@
   <mat-card-title>
     <a href="{{event.url}}">{{event?.name}}</a>
   </mat-card-title>
-  <mat-card-subtitle>{{event?.date | date:'dd/MM/yyyy'}}</mat-card-subtitle>
+  <mat-card-subtitle>{{event?.date.toDate() | date:'dd/MM/yyyy'}}</mat-card-subtitle>
   <mat-card-content>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
@@ -11,10 +11,12 @@
 
       <ng-template matExpansionPanelContent>
         <mat-list role="list">
-          <mat-list-item role="listitem" *ngFor="let c of (event.classement | eventsRank)"><app-event-rank [event-rank]="c" ></app-event-rank></mat-list-item>
+          <mat-list-item role="listitem" *ngFor="let c of (event.classement | eventsRank)">
+            <app-event-rank [event-rank]="c"></app-event-rank>
+          </mat-list-item>
         </mat-list>
       </ng-template>
     </mat-expansion-panel>
-    <div *ngIf="event?.register" [innerHTML]="event?.register | safeHtml" style="margin-top: 10px" ></div>
+    <div *ngIf="event?.register" [innerHTML]="event?.register | safeHtml" style="margin-top: 10px"></div>
   </mat-card-content>
 </mat-card>
