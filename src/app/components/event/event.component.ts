@@ -10,6 +10,7 @@ import {RankedTeamleader} from '../../models/ranked-teamleader';
 export class EventComponent implements OnInit {
 
   @Input('event') private _event: Event;
+
   constructor() { }
 
   ngOnInit() {
@@ -22,6 +23,11 @@ export class EventComponent implements OnInit {
 
   get event() {
     return this._event;
+  }
+
+  eventDate(event) {
+  // convert firebase seconds to milliseconds
+    return event.date.seconds * 1000;
   }
 
 }

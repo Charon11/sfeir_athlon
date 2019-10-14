@@ -2,7 +2,7 @@
   <mat-card-title>
     <a href="{{event.url}}">{{event?.name}}</a>
   </mat-card-title>
-  <mat-card-subtitle>{{event?.date.toDate() | date:'dd/MM/yyyy'}}</mat-card-subtitle>
+  <mat-card-subtitle>{{eventDate(event) | date:'dd/MM/yyyy'}}</mat-card-subtitle>
   <mat-card-content>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
