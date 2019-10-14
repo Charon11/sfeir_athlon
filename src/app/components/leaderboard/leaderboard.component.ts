@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {EventsService} from '../../services/events.service';
 import {RankedTeamleader} from '../../models/ranked-teamleader';
 import {MatDialog} from '@angular/material';

@@ -3,7 +3,7 @@ import { TeamLeader } from '../../models/team-leader';
 import { DomSanitizer } from '@angular/platform-browser';
 import {RankedTeamleader} from '../../models/ranked-teamleader';
 import {EventsService} from '../../services/events.service';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {BaseChartDirective} from 'ng2-charts';
 
 @Component({
