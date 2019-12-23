@@ -6,15 +6,15 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyBAU8EVJl2bUKvAv90d7kdG35YODa3vPEg',
-    authDomain: 'sfeirathlon.firebaseapp.com',
-    databaseURL: 'https://sfeirathlon.firebaseio.com',
-    projectId: 'sfeirathlon',
-    storageBucket: 'sfeirathlon.appspot.com',
-    messagingSenderId: '134999122609'
+    apiKey: 'AIzaSyDCjYvnWnU86h8SQHUh5iGMKTMp6X1eiTc',
+    authDomain: 'sfeir-athlon.firebaseapp.com',
+    databaseURL: 'https://sfeir-athlon.firebaseio.com',
+    projectId: 'sfeir-athlon',
+    storageBucket: 'sfeir-athlon.appspot.com',
+    messagingSenderId: '1068492240053'
   },
   collections : {
-    tl: 'team-leader',
-    events: 'events'
+    tl: 'team-leaders',
+    events: 'events-2019'
   }
 };
