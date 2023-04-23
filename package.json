@@ -36,7 +36,7 @@
     "firebase": "^6.6.2",
     "ng2-charts": "^1.6.0",
     "ngx-md": "^8.0.0",
-    "npm": "^6.12.0",
+    "npm": "^9.6.5",
     "reset-css": "^3.0.0",
     "rxjs": "^6.5.3",
     "tslib": "^1.10.0",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.9",
-    "@angular/cli": "^8.3.9",
+    "@angular/cli": "^15.2.6",
     "@angular/compiler-cli": "^8.2.10",
     "@angular/language-service": "^8.2.10",
     "@types/jasmine": "^2.8.16",
