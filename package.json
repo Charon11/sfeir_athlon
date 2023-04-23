@@ -32,7 +32,7 @@
     "chart.js": "^2.8.0",
     "chartjs-plugin-datalabels": "^0.4.0",
     "core-js": "^2.6.9",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "firebase": "^6.6.2",
     "ng2-charts": "^1.6.0",
     "ngx-md": "^8.0.0",
